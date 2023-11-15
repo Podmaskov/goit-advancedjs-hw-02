@@ -13,7 +13,10 @@ const HOURS = document.querySelector('[data-hours]');
 const MINUTES = document.querySelector('[data-minutes]');
 const SECONDS = document.querySelector('[data-seconds]');
 const MS_PER_SECOND = 1000;
-
+const TOAST_DEFAULT_OPTIONS = {
+  position: 'topRight',
+  messageColor: '#fff',
+};
 START_BTN.setAttribute('disabled', true);
 
 function setToDOM({ days, hours, minutes, seconds }) {
@@ -41,10 +44,9 @@ function startTimer() {
     if (timeToEmd < MS_PER_SECOND) {
       clearInterval(intervalID);
       iziToast.show({
+        ...TOAST_DEFAULT_OPTIONS,
         message: 'The time is up',
         color: '#7dc67d',
-        position: 'topRight',
-        messageColor: '#fff',
       });
       return;
     }
@@ -63,10 +65,9 @@ const datePickerOptions = {
     const timeToEmd = Number(selectedDates[0]) - Number(new Date());
     if (timeToEmd < 0) {
       iziToast.show({
+        ...TOAST_DEFAULT_OPTIONS,
         message: 'Please choose a date in the future',
         color: '#ef5350',
-        position: 'topRight',
-        messageColor: '#fff',
       });
       return;
     }
