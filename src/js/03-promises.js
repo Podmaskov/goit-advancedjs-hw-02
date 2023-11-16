@@ -32,15 +32,21 @@ function showToast(position, delay, isSuccess) {
 
 function onSubmit(event) {
   event.preventDefault();
-  const firstDelay = Number(event.target.elements.delay.value);
-  const step = Number(event.target.elements.step.value);
-  const amount = Number(event.target.elements.amount.value);
+  const {
+    target: {
+      elements: {
+        delay: delayElement,
+        step: stepElement,
+        amount: amountElement,
+      },
+    },
+  } = event;
 
-  for (let i = 0; i < amount; i++) {
+  for (let i = 0; i < Number(amountElement.value); i++) {
     const position = i + 1;
-    const delay = firstDelay + step * i;
-
-    createPromise(position, delay)
+    const delayPromise =
+      Number(delayElement.value) + Number(stepElement.value) * i;
+    createPromise(position, delayPromise)
       .then(({ position, delay }) => {
         showToast(position, delay, true);
       })
@@ -48,6 +54,9 @@ function onSubmit(event) {
         showToast(position, delay, false);
       });
   }
+  delayElement.value = '';
+  stepElement.value = '';
+  amountElement.value = '';
 }
 
 FORM.addEventListener('submit', onSubmit);

@@ -7,35 +7,35 @@ import '../css/timer.css';
 import 'izitoast/dist/css/iziToast.min.css';
 import 'flatpickr/dist/flatpickr.min.css';
 
-const START_BTN = document.querySelector('[data-start]');
-const DAYS = document.querySelector('[data-days]');
-const HOURS = document.querySelector('[data-hours]');
-const MINUTES = document.querySelector('[data-minutes]');
-const SECONDS = document.querySelector('[data-seconds]');
+const startBtn = document.querySelector('[data-start]');
+const daysElement = document.querySelector('[data-days]');
+const hoursElement = document.querySelector('[data-hours]');
+const minutesElement = document.querySelector('[data-minutes]');
+const secondsElement = document.querySelector('[data-seconds]');
 const MS_PER_SECOND = 1000;
 const TOAST_DEFAULT_OPTIONS = {
   position: 'topRight',
   messageColor: '#fff',
 };
-START_BTN.setAttribute('disabled', true);
+startBtn.setAttribute('disabled', true);
 
 function setToDOM({ days, hours, minutes, seconds }) {
-  if (DAYS.innerHTML !== addLeadingZero(days)) {
-    DAYS.innerHTML = addLeadingZero(days);
+  if (daysElement.innerHTML !== addLeadingZero(days)) {
+    daysElement.innerHTML = addLeadingZero(days);
   }
-  if (HOURS.innerHTML !== addLeadingZero(hours)) {
-    HOURS.innerHTML = addLeadingZero(hours);
+  if (hoursElement.innerHTML !== addLeadingZero(hours)) {
+    hoursElement.innerHTML = addLeadingZero(hours);
   }
-  if (MINUTES.innerHTML !== addLeadingZero(minutes)) {
-    MINUTES.innerHTML = addLeadingZero(minutes);
+  if (minutesElement.innerHTML !== addLeadingZero(minutes)) {
+    minutesElement.innerHTML = addLeadingZero(minutes);
   }
-  SECONDS.innerHTML = addLeadingZero(seconds);
+  secondsElement.innerHTML = addLeadingZero(seconds);
 }
 
 function startTimer() {
   let timeToEmd = Number(this.latestSelectedDateObj) - Number(new Date());
-
-  START_BTN.setAttribute('disabled', true);
+  this._input.setAttribute('disabled', true);
+  startBtn.setAttribute('disabled', true);
 
   setToDOM(convertMs(timeToEmd));
   timeToEmd -= MS_PER_SECOND;
@@ -48,6 +48,7 @@ function startTimer() {
         message: 'The time is up',
         color: '#7dc67d',
       });
+      this._input.removeAttribute('disabled');
       return;
     }
 
@@ -71,10 +72,10 @@ const datePickerOptions = {
       });
       return;
     }
-    START_BTN.removeAttribute('disabled');
+    startBtn.removeAttribute('disabled');
   },
 };
 
 const datePicker = flatpickr('#datetime-picker', datePickerOptions);
 
-START_BTN.addEventListener('click', startTimer.bind(datePicker));
+startBtn.addEventListener('click', startTimer.bind(datePicker));
